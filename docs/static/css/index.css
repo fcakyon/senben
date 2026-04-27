@@ -1,0 +1,98 @@
+/* SenBen project page styles. Bulma is loaded from CDN; this file adds the custom polish. */
+
+body {
+  font-family:
+    "Noto Sans",
+    "Google Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: #ffffff;
+  color: #222;
+}
+
+.publication-title {
+  font-family: "Google Sans", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.publication-authors a {
+  color: #2160a8;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.publication-authors a:hover {
+  border-bottom-color: #2160a8;
+}
+
+.publication-links .button {
+  margin: 0.25rem 0.25rem;
+}
+
+.hero.teaser .image {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+.card .title.is-5 {
+  margin-bottom: 0.4rem;
+}
+.card ul li {
+  margin: 0.35rem 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.card ul li code {
+  background: #f4f6f8;
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.85rem;
+}
+
+pre code {
+  font-family: "JetBrains Mono", "Fira Code", "Menlo", monospace;
+  font-size: 0.85rem;
+}
+
+/* Floating pill linking to author's other publications, lower-right corner. */
+.more-publications {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 100;
+}
+.more-pubs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: #1f2933;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: background 0.15s ease;
+}
+.more-pubs-pill:hover {
+  background: #2160a8;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .more-publications {
+    display: none;
+  }
+}
+
+footer.footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
