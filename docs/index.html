@@ -223,8 +223,14 @@
                 </div>
 
                 <div class="is-size-5 publication-authors">
-                  <span class="author-block"><sup>1</sup>Graduate School of Informatics, METU</span>
-                  <span class="author-block">&nbsp;&nbsp;<sup>2</sup>Ultralytics</span>
+                  <span class="author-block"
+                    ><sup>1</sup
+                    ><a href="https://ii.metu.edu.tr/" target="_blank">Graduate School of Informatics, METU</a></span
+                  >
+                  <span class="author-block"
+                    >&nbsp;&nbsp;<sup>2</sup
+                    ><a href="https://www.ultralytics.com/" target="_blank">Ultralytics</a></span
+                  >
                 </div>
 
                 <div class="is-size-6 publication-authors" style="margin-top: 0.4rem">
@@ -289,6 +295,15 @@
                     </span>
 
                     <span class="link-block">
+                      <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"><i class="fas fa-quote-left"></i></span>
+                        <span>BibTeX</span>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="publication-links" style="margin-top: 0.5rem">
+                    <span class="link-block">
                       <button
                         class="button is-normal is-rounded is-dark"
                         disabled
@@ -309,13 +324,6 @@
                         <span>Q2L-agg (coming soon)</span>
                       </button>
                     </span>
-
-                    <span class="link-block">
-                      <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon"><i class="fas fa-quote-left"></i></span>
-                        <span>BibTeX</span>
-                      </a>
-                    </span>
                   </div>
                 </div>
               </div>
@@ -334,12 +342,15 @@
                 style="max-width: 100%; height: auto"
               />
             </figure>
-            <h2 class="subtitle has-text-centered" style="margin-top: 1rem">
+            <p
+              class="has-text-centered"
+              style="font-size: 0.9rem; color: #666; max-width: 760px; margin: 0.75rem auto 0"
+            >
               <strong>Left:</strong> Latency vs SenBen-F1 across all evaluated models. Our 241M Q2L students sit at
               733&nbsp;ms with $0 inference cost, well below proprietary APIs and 8 to 10B open VLMs.
               <strong>Right:</strong> Tag F1 across safety classifiers. Q2L-bal covers all 16 MECD tags and reaches
               F1<sup>tag</sup>&nbsp;=&nbsp;.594, vs the best commercial API at .430.
-            </h2>
+            </p>
           </div>
         </div>
       </section>
@@ -375,91 +386,500 @@
 
       <section class="section">
         <div class="container is-max-desktop">
-          <h2 class="title is-3 has-text-centered">Headline numbers</h2>
+          <h2 class="title is-3 has-text-centered">Method</h2>
+          <figure class="image" style="margin: 1rem auto 0.5rem; max-width: 100%">
+            <img
+              src="static/images/pipeline.png"
+              alt="SenBen pipeline. Florence-2 vision-language student trained joint-multi-task on the SenBen training set, with a decoupled Query2Label tag head and the VAR / MinPermCE / Suffix / scheduled-sampling / label-smoothing recipe."
+            />
+          </figure>
+          <p class="has-text-centered" style="font-size: 0.9rem; color: #666; max-width: 760px; margin: 0.5rem auto 0">
+            <strong>Pipeline.</strong> Florence-2-base (231M) is fine-tuned on five tasks jointly: tag classification,
+            object detection, attribute prediction, predicate (relationship) prediction, and captioning. A decoupled
+            Query2Label tag head (10M) handles the 16 MECD tags via cross-attention to vision features, leaving the
+            seq2seq decoder free to focus on grounded scene-graph generation. Vocabulary-Aware Recall (VAR) Loss,
+            MinPermutationCE, suffix-based object identity, scheduled sampling, and label smoothing each contribute
+            incrementally; see Tables 1 and 2 below.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container is-max-desktop">
+          <h2 class="title is-3 has-text-centered">Results</h2>
           <p class="has-text-centered" style="margin-bottom: 2rem; color: #666">
-            From the paper's Tables 2, 3, and 4. Full breakdown is in the
-            <a href="https://arxiv.org/abs/2604.08819" target="_blank">paper</a>.
+            All numbers below are from the paper's Tables 1 to 5. Our model rows are highlighted.
           </p>
 
-          <div class="columns is-multiline">
-            <div class="column is-half">
-              <div class="content">
-                <h3 class="title is-5" style="margin-bottom: 0.5rem">Vs frontier vision language models</h3>
-                <p style="font-size: 0.85rem; color: #666">SenBen test split, 2,000 frames</p>
-                <ul>
-                  <li>
-                    🏆 <strong>Best Object Recall</strong> across 8 evaluated VLMs: <code>.420</code> vs next-best
-                    Gemini&nbsp;3&nbsp;Pro <code>.295</code>
-                  </li>
-                  <li>
-                    🏆 <strong>Best Caption Similarity</strong>: <code>.77</code> vs next-best Gemini&nbsp;3&nbsp;Flash
-                    <code>.654</code>
-                  </li>
-                  <li>
-                    🥈 <strong>Best SenBen-F1 among non-Gemini models</strong>: <code>.428</code> vs Claude
-                    Opus&nbsp;4.6 <code>.404</code>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <h3 class="title is-5" style="margin-top: 2rem">Table 1. System ablation</h3>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
+            Incremental gains as components are added on top of the cross-entropy baseline. SenBen-Recall and SenBen-F1
+            are the headline metrics; Tag F1 is macro tag F1.
+          </p>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th class="has-text-right">SenBen-Recall</th>
+                  <th class="has-text-right">SenBen-F1</th>
+                  <th class="has-text-right">Tag F1</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CE (baseline)</td>
+                  <td class="has-text-right">.349</td>
+                  <td class="has-text-right">.389</td>
+                  <td class="has-text-right">.544</td>
+                </tr>
+                <tr>
+                  <td>+ Suffix</td>
+                  <td class="has-text-right">.366</td>
+                  <td class="has-text-right">.406</td>
+                  <td class="has-text-right">.509</td>
+                </tr>
+                <tr>
+                  <td>+ VAR</td>
+                  <td class="has-text-right">.376</td>
+                  <td class="has-text-right">.408</td>
+                  <td class="has-text-right">.509</td>
+                </tr>
+                <tr>
+                  <td>+ MinPermCE</td>
+                  <td class="has-text-right">.386</td>
+                  <td class="has-text-right">.415</td>
+                  <td class="has-text-right">.532</td>
+                </tr>
+                <tr>
+                  <td>+ Label smoothing</td>
+                  <td class="has-text-right">.385</td>
+                  <td class="has-text-right">.419</td>
+                  <td class="has-text-right">.533</td>
+                </tr>
+                <tr>
+                  <td>+ Scheduled sampling</td>
+                  <td class="has-text-right">.392</td>
+                  <td class="has-text-right">.422</td>
+                  <td class="has-text-right">.516</td>
+                </tr>
+                <tr style="background: #d6f5f1">
+                  <td><b>+ Q2L balanced (= Q2L-bal)</b></td>
+                  <td class="has-text-right"><b>.413</b></td>
+                  <td class="has-text-right"><b>.428</b></td>
+                  <td class="has-text-right"><b>.594</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div class="column is-half">
-              <div class="content">
-                <h3 class="title is-5" style="margin-bottom: 0.5rem">Vs content moderation APIs</h3>
-                <p style="font-size: 0.85rem; color: #666">SenBen test split, 16 MECD tag taxonomy</p>
-                <ul>
-                  <li>
-                    🏆 <strong>Only model that covers all 16 MECD tags.</strong> Every commercial API and safety
-                    classifier covers at most 8.
-                  </li>
-                  <li>
-                    🏆 <strong>Highest tag F1</strong>: <code>.594</code> (Q2L-bal) vs Azure Content Safety
-                    <code>.430</code>
-                  </li>
-                  <li>
-                    🏆 <strong>Highest safe / unsafe F1</strong>: <code>.847</code> vs OpenAI Moderation
-                    <code>.664</code>
-                  </li>
-                  <li>
-                    🏆 <strong>Plus a full grounded scene graph</strong> (objects, attributes, predicates, bounding
-                    boxes) that no safety classifier produces
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <h3 class="title is-5" style="margin-top: 2.5rem">
+            Table 2. Per-category leave-one-out (delta SenBen-Recall, percentage points)
+          </h3>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
+            Drop in SenBen-Recall per MECD category when each ingredient is removed from the full decoder (VAR + SS +
+            MinPermCE + LS + Suffix). Suffix-based identity and VAR Loss are the two most impactful components.
+          </p>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>Removed</th>
+                  <th class="has-text-right">immod</th>
+                  <th class="has-text-right">sexual</th>
+                  <th class="has-text-right">viol</th>
+                  <th class="has-text-right">subst</th>
+                  <th class="has-text-right">other</th>
+                  <th class="has-text-right">avg</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>- Suffix</td>
+                  <td class="has-text-right">-4.6</td>
+                  <td class="has-text-right">-4.5</td>
+                  <td class="has-text-right">-6.5</td>
+                  <td class="has-text-right">-2.9</td>
+                  <td class="has-text-right">-0.4</td>
+                  <td class="has-text-right">-3.8</td>
+                </tr>
+                <tr>
+                  <td>- VAR</td>
+                  <td class="has-text-right">-5.7</td>
+                  <td class="has-text-right">-7.7</td>
+                  <td class="has-text-right">-2.0</td>
+                  <td class="has-text-right">-0.9</td>
+                  <td class="has-text-right">-0.9</td>
+                  <td class="has-text-right">-3.4</td>
+                </tr>
+                <tr>
+                  <td>- LS</td>
+                  <td class="has-text-right">-3.3</td>
+                  <td class="has-text-right">-5.7</td>
+                  <td class="has-text-right">+0.3</td>
+                  <td class="has-text-right">+0.4</td>
+                  <td class="has-text-right">+0.8</td>
+                  <td class="has-text-right">-1.5</td>
+                </tr>
+                <tr>
+                  <td>- SS</td>
+                  <td class="has-text-right">-1.6</td>
+                  <td class="has-text-right">-2.8</td>
+                  <td class="has-text-right">+0.3</td>
+                  <td class="has-text-right">+0.8</td>
+                  <td class="has-text-right">-0.4</td>
+                  <td class="has-text-right">-0.7</td>
+                </tr>
+                <tr>
+                  <td>- MinPermCE</td>
+                  <td class="has-text-right">+0.5</td>
+                  <td class="has-text-right">-2.4</td>
+                  <td class="has-text-right">-1.4</td>
+                  <td class="has-text-right">+1.7</td>
+                  <td class="has-text-right">-0.4</td>
+                  <td class="has-text-right">-0.4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div class="column is-half">
-              <div class="content">
-                <h3 class="title is-5" style="margin-bottom: 0.5rem">Efficiency</h3>
-                <p style="font-size: 0.85rem; color: #666">RTX 4090, fp32, beam search B=3</p>
-                <ul>
-                  <li>🏆 <strong>733 ms / frame</strong>, lowest latency in our evaluation</li>
-                  <li>
-                    🏆 <strong>1.2 GB peak VRAM</strong>, 16 to 18x lower than open VLMs (18.8 GB Qwen3-VL, 21.5 GB
-                    GLM-4.6V)
-                  </li>
-                  <li>🏆 <strong>$0 per inference</strong>, vs $4.49 to $26.58 per 2K frames for proprietary APIs</li>
-                </ul>
-              </div>
-            </div>
+          <h3 class="title is-5" style="margin-top: 2.5rem">
+            Table 3. SenBen results vs frontier vision language models
+          </h3>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
+            On the 2,000-frame test split. SenBen-Recall and SenBen-F1 are the headline metrics. Tag F1 is macro F1 over
+            MECD tags, Object Recall is sensitive object recall at IoU >= .5, Caption Similarity uses BGE-m3 sentence
+            embeddings. Sorted by SenBen-F1 descending.
+          </p>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th class="has-text-right">Params</th>
+                  <th class="has-text-right">SenBen-Recall</th>
+                  <th class="has-text-right">SenBen-F1</th>
+                  <th class="has-text-right">Tag F1</th>
+                  <th class="has-text-right">Object Recall</th>
+                  <th class="has-text-right">Caption Similarity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Gemini 3 Pro (low reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.652</td>
+                  <td class="has-text-right">.647</td>
+                  <td class="has-text-right">.806</td>
+                  <td class="has-text-right">.295</td>
+                  <td class="has-text-right">.642</td>
+                </tr>
+                <tr>
+                  <td>Gemini 3 Flash (low reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.593</td>
+                  <td class="has-text-right">.583</td>
+                  <td class="has-text-right">.784</td>
+                  <td class="has-text-right">.271</td>
+                  <td class="has-text-right">.654</td>
+                </tr>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-agg" target="_blank">Q2L-agg (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>.457</b></td>
+                  <td class="has-text-right"><b>.409</b></td>
+                  <td class="has-text-right"><b>.449</b></td>
+                  <td class="has-text-right"><b>.431</b></td>
+                  <td class="has-text-right"><b>.772</b></td>
+                </tr>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-bal" target="_blank">Q2L-bal (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>.594</b></td>
+                  <td class="has-text-right"><b>.420</b></td>
+                  <td class="has-text-right"><b>.413</b></td>
+                  <td class="has-text-right"><b>.428</b></td>
+                  <td class="has-text-right"><b>.771</b></td>
+                </tr>
+                <tr>
+                  <td>Claude Opus 4.6</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.327</td>
+                  <td class="has-text-right">.404</td>
+                  <td class="has-text-right">.658</td>
+                  <td class="has-text-right">.082</td>
+                  <td class="has-text-right">.598</td>
+                </tr>
+                <tr>
+                  <td>GLM-4.6V (reas.)</td>
+                  <td class="has-text-right">10.3B</td>
+                  <td class="has-text-right">.291</td>
+                  <td class="has-text-right">.364</td>
+                  <td class="has-text-right">.492</td>
+                  <td class="has-text-right">.123</td>
+                  <td class="has-text-right">.563</td>
+                </tr>
+                <tr>
+                  <td>GPT-5.2 (med. reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.319</td>
+                  <td class="has-text-right">.362</td>
+                  <td class="has-text-right">.608</td>
+                  <td class="has-text-right">.072</td>
+                  <td class="has-text-right">.616</td>
+                </tr>
+                <tr>
+                  <td>Qwen3-VL-8B</td>
+                  <td class="has-text-right">8.3B</td>
+                  <td class="has-text-right">.286</td>
+                  <td class="has-text-right">.340</td>
+                  <td class="has-text-right">.469</td>
+                  <td class="has-text-right">.104</td>
+                  <td class="has-text-right">.548</td>
+                </tr>
+                <tr>
+                  <td>Claude Sonnet 4.6</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.277</td>
+                  <td class="has-text-right">.339</td>
+                  <td class="has-text-right">.643</td>
+                  <td class="has-text-right">.034</td>
+                  <td class="has-text-right">.590</td>
+                </tr>
+                <tr>
+                  <td>GPT-5-mini (med. reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.285</td>
+                  <td class="has-text-right">.330</td>
+                  <td class="has-text-right">.659</td>
+                  <td class="has-text-right">.040</td>
+                  <td class="has-text-right">.605</td>
+                </tr>
+                <tr>
+                  <td>GPT-5.2</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">.247</td>
+                  <td class="has-text-right">.304</td>
+                  <td class="has-text-right">.550</td>
+                  <td class="has-text-right">.052</td>
+                  <td class="has-text-right">.583</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div class="column is-half">
-              <div class="content">
-                <h3 class="title is-5" style="margin-bottom: 0.5rem">Two operating points</h3>
-                <p style="font-size: 0.85rem; color: #666">Same architecture, different ASL gammas</p>
-                <ul>
-                  <li>
-                    <strong>Q2L-bal</strong> (γ⁻=4, γ⁺=1): tag-detection-focused. Highest tag F1 of our two models
-                    (<code>.594</code>).
-                  </li>
-                  <li>
-                    <strong>Q2L-agg</strong> (γ⁻=7, γ⁺=0): grounded-scene-graph-focused. Highest SenBen-F1 of our two
-                    models (<code>.431</code>).
-                  </li>
-                  <li>Both 241M, 733&nbsp;ms, $0 cost. Pick whichever fits your moderation pipeline.</li>
-                </ul>
-              </div>
-            </div>
+          <h3 class="title is-5" style="margin-top: 2.5rem">
+            Table 4. Tag detection vs commercial safety APIs and classifiers
+          </h3>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
+            Tags column lists the number of MECD tags each model supports. F1<sup>tag</sup> is macro F1 over each
+            model's supported tags. F1<sup>s</sup> is binary safe versus unsafe F1 over the full taxonomy.
+          </p>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th class="has-text-right">Params</th>
+                  <th class="has-text-right">Tags</th>
+                  <th class="has-text-right">Tag F1</th>
+                  <th class="has-text-right">F1<sup>s</sup></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-bal" target="_blank">Q2L-bal (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>16 / 16</b></td>
+                  <td class="has-text-right"><b>.594</b></td>
+                  <td class="has-text-right"><b>.847</b></td>
+                </tr>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-agg" target="_blank">Q2L-agg (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>16 / 16</b></td>
+                  <td class="has-text-right"><b>.457</b></td>
+                  <td class="has-text-right"><b>.835</b></td>
+                </tr>
+                <tr>
+                  <td>Azure Content Safety</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">5 / 16</td>
+                  <td class="has-text-right">.430</td>
+                  <td class="has-text-right">.504</td>
+                </tr>
+                <tr>
+                  <td>OpenAI Moderation</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">6 / 16</td>
+                  <td class="has-text-right">.411</td>
+                  <td class="has-text-right">.664</td>
+                </tr>
+                <tr>
+                  <td>LlavaGuard 1.2</td>
+                  <td class="has-text-right">7.0B</td>
+                  <td class="has-text-right">6 / 16</td>
+                  <td class="has-text-right">.384</td>
+                  <td class="has-text-right">.583</td>
+                </tr>
+                <tr>
+                  <td>Google SafeSearch</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">8 / 16</td>
+                  <td class="has-text-right">.341</td>
+                  <td class="has-text-right">.476</td>
+                </tr>
+                <tr>
+                  <td>SD Safety Checker</td>
+                  <td class="has-text-right">304M</td>
+                  <td class="has-text-right">2 / 16</td>
+                  <td class="has-text-right">.333</td>
+                  <td class="has-text-right">.472</td>
+                </tr>
+                <tr>
+                  <td>NudeNet Detector</td>
+                  <td class="has-text-right">25.9M</td>
+                  <td class="has-text-right">1 / 16</td>
+                  <td class="has-text-right">.238</td>
+                  <td class="has-text-right">.238</td>
+                </tr>
+                <tr>
+                  <td>LAION Safety Checker</td>
+                  <td class="has-text-right">1.0B</td>
+                  <td class="has-text-right">2 / 16</td>
+                  <td class="has-text-right">.225</td>
+                  <td class="has-text-right">.357</td>
+                </tr>
+                <tr>
+                  <td>NudeNet Classifier</td>
+                  <td class="has-text-right">8.5M</td>
+                  <td class="has-text-right">1 / 16</td>
+                  <td class="has-text-right">.117</td>
+                  <td class="has-text-right">.117</td>
+                </tr>
+                <tr>
+                  <td>ShieldGemma 2</td>
+                  <td class="has-text-right">4.0B</td>
+                  <td class="has-text-right">4 / 16</td>
+                  <td class="has-text-right">.089</td>
+                  <td class="has-text-right">.161</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="title is-5" style="margin-top: 2.5rem">Table 5. Inference efficiency</h3>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
+            Sequential 5-frame avg latency on RTX 4090, fp32, beam search B = 3. VRAM is peak GPU memory. $/2K is total
+            API cost for 2,000 frames. Sorted by latency ascending.
+          </p>
+          <div class="table-container">
+            <table class="table is-fullwidth is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th class="has-text-right">Params</th>
+                  <th class="has-text-right">ms / frame</th>
+                  <th class="has-text-right">Peak VRAM</th>
+                  <th class="has-text-right">Cost / 2K frames</th>
+                  <th class="has-text-right">SenBen-F1</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-bal" target="_blank">Q2L-bal (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>733</b></td>
+                  <td class="has-text-right"><b>1.2 GB</b></td>
+                  <td class="has-text-right"><b>$0</b></td>
+                  <td class="has-text-right"><b>.428</b></td>
+                </tr>
+                <tr style="background: #d6f5f1">
+                  <td>
+                    <b><a href="https://huggingface.co/fcakyon/senben-q2l-agg" target="_blank">Q2L-agg (ours)</a></b>
+                  </td>
+                  <td class="has-text-right"><b>241M</b></td>
+                  <td class="has-text-right"><b>733</b></td>
+                  <td class="has-text-right"><b>1.2 GB</b></td>
+                  <td class="has-text-right"><b>$0</b></td>
+                  <td class="has-text-right"><b>.431</b></td>
+                </tr>
+                <tr>
+                  <td>Claude Sonnet 4.6</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">3,438</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$12.14</td>
+                  <td class="has-text-right">.339</td>
+                </tr>
+                <tr>
+                  <td>Claude Opus 4.6</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">4,555</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$20.02</td>
+                  <td class="has-text-right">.404</td>
+                </tr>
+                <tr>
+                  <td>Gemini 3 Pro (low reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">5,579</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$26.58</td>
+                  <td class="has-text-right">.647</td>
+                </tr>
+                <tr>
+                  <td>Qwen3-VL-8B</td>
+                  <td class="has-text-right">8.3B</td>
+                  <td class="has-text-right">5,614</td>
+                  <td class="has-text-right">18.8 GB</td>
+                  <td class="has-text-right">$0</td>
+                  <td class="has-text-right">.340</td>
+                </tr>
+                <tr>
+                  <td>Gemini 3 Flash (low reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">6,121</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$5.80</td>
+                  <td class="has-text-right">.583</td>
+                </tr>
+                <tr>
+                  <td>GPT-5.2 (med. reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">9,019</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$16.25</td>
+                  <td class="has-text-right">.362</td>
+                </tr>
+                <tr>
+                  <td>GPT-5-mini (med. reas.)</td>
+                  <td class="has-text-right">proprietary</td>
+                  <td class="has-text-right">13,412</td>
+                  <td class="has-text-right">cloud</td>
+                  <td class="has-text-right">$4.49</td>
+                  <td class="has-text-right">.330</td>
+                </tr>
+                <tr>
+                  <td>GLM-4.6V (reas.)</td>
+                  <td class="has-text-right">10.3B</td>
+                  <td class="has-text-right">17,056</td>
+                  <td class="has-text-right">21.5 GB</td>
+                  <td class="has-text-right">$0</td>
+                  <td class="has-text-right">.364</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
