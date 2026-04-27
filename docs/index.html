@@ -1,447 +1,561 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="title" content="SenBen: Sensitive Scene Graphs for Explainable Content Moderation" />
     <meta
       name="description"
-      content="SenBen: Sensitive Benchmark for Explainable Content Moderation. CVPRW 2026 paper, code, dataset, and trained models."
+      content="A new benchmark for evaluating sensitive content understanding in vision language models. 13,999 movie frames with grounded scene graphs, plus 241M Florence-2 students at 7.6x faster inference and 16x less VRAM than open VLMs."
     />
+    <meta
+      name="keywords"
+      content="scene graph generation, content moderation, explainable AI, vision language models, small models, Florence-2, NSFW detection, visual grounding, multi-task learning, responsible AI, CVPRW 2026"
+    />
+    <meta name="author" content="Fatih Cagatay Akyon, Alptekin Temizel" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Graduate School of Informatics, METU" />
     <meta property="og:title" content="SenBen: Sensitive Scene Graphs for Explainable Content Moderation" />
     <meta
       property="og:description"
-      content="A new benchmark for evaluating sensitive content understanding in vision language models. 13,999 movie frames with grounded scene graphs."
+      content="A new benchmark for evaluating sensitive content understanding in vision language models. CVPRW 2026."
     />
-    <meta property="og:image" content="https://senben.kim/static/images/teaser.png" />
     <meta property="og:url" content="https://senben.kim" />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://senben.kim/static/images/teaser.png" />
+    <meta
+      property="og:image:alt"
+      content="SenBen teaser: latency vs SenBen-F1 across compact and frontier vision language models"
+    />
+
     <meta name="twitter:card" content="summary_large_image" />
-    <title>SenBen: Sensitive Benchmark (CVPRW 2026)</title>
+    <meta name="twitter:title" content="SenBen: Sensitive Scene Graphs for Explainable Content Moderation" />
+    <meta
+      name="twitter:description"
+      content="A new benchmark for evaluating sensitive content understanding in vision language models. CVPRW 2026."
+    />
+    <meta name="twitter:image" content="https://senben.kim/static/images/teaser.png" />
+
+    <meta name="citation_title" content="SenBen: Sensitive Scene Graphs for Explainable Content Moderation" />
+    <meta name="citation_author" content="Akyon, Fatih Cagatay" />
+    <meta name="citation_author" content="Temizel, Alptekin" />
+    <meta name="citation_publication_date" content="2026" />
+    <meta
+      name="citation_conference_title"
+      content="IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)"
+    />
+    <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2604.08819.pdf" />
+    <meta name="citation_arxiv_id" content="2604.08819" />
+
+    <meta name="theme-color" content="#1a3a5c" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+    <title>SenBen: Sensitive Scene Graphs for Explainable Content Moderation | CVPRW 2026</title>
 
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="stylesheet" href="static/css/bulma.min.css" />
+    <link rel="stylesheet" href="static/css/index.css" />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap"
+      rel="preload"
+      href="static/css/bulma-carousel.min.css"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <link
+      rel="preload"
+      href="static/css/bulma-slider.min.css"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <link
+      rel="preload"
+      href="static/css/fontawesome.all.min.css"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+
+    <noscript>
+      <link rel="stylesheet" href="static/css/bulma-carousel.min.css" />
+      <link rel="stylesheet" href="static/css/bulma-slider.min.css" />
+      <link rel="stylesheet" href="static/css/fontawesome.all.min.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+    </noscript>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="static/css/index.css" />
+
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="static/js/fontawesome.all.min.js"></script>
+    <script defer src="static/js/bulma-carousel.min.js"></script>
+    <script defer src="static/js/bulma-slider.min.js"></script>
+    <script defer src="static/js/index.js"></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "SenBen: Sensitive Scene Graphs for Explainable Content Moderation",
+        "description": "A new benchmark for evaluating sensitive content understanding in vision language models. 13,999 movie frames with grounded scene graphs.",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "Fatih Cagatay Akyon",
+            "affiliation": {
+              "@type": "Organization",
+              "name": "Graduate School of Informatics, METU"
+            }
+          },
+          {
+            "@type": "Person",
+            "name": "Alptekin Temizel",
+            "affiliation": {
+              "@type": "Organization",
+              "name": "Graduate School of Informatics, METU"
+            }
+          }
+        ],
+        "datePublished": "2026",
+        "publisher": {
+          "@type": "Organization",
+          "name": "IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)"
+        },
+        "url": "https://senben.kim",
+        "image": "https://senben.kim/static/images/teaser.png",
+        "keywords": [
+          "scene graph generation",
+          "content moderation",
+          "explainable AI",
+          "vision language models",
+          "small models",
+          "Florence-2"
+        ]
+      }
+    </script>
   </head>
   <body>
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container is-max-desktop">
-          <div class="columns is-centered">
-            <div class="column has-text-centered">
-              <h1 class="title is-2 publication-title">
-                🎬 SenBen: Sensitive Scene Graphs for Explainable Content Moderation
-              </h1>
-              <h2 class="subtitle is-5" style="color: #888">CVPR Workshops 2026</h2>
+    <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </button>
 
-              <div class="is-size-5 publication-authors mt-4">
-                <span class="author-block">
-                  <a href="https://scholar.google.com/citations?user=RHGyDE0AAAAJ&hl=en" target="_blank">Fatih Cagatay Akyon</a><sup>1,2</sup>,
-                </span>
-                <span class="author-block">
-                  <a href="https://blog.metu.edu.tr/atemizel/" target="_blank">Alptekin Temizel</a><sup>1</sup>
-                </span>
-              </div>
-
-              <div class="is-size-6 publication-affiliations mt-2" style="color: #666">
-                <span class="author-block"><sup>1</sup>Middle East Technical University</span>
-                <span class="author-block">&nbsp;&nbsp;<sup>2</sup>Ultralytics</span>
-              </div>
-
-              <div class="publication-links mt-5">
-                <span class="link-block">
-                  <a
-                    href="https://arxiv.org/abs/2604.08819"
-                    target="_blank"
-                    class="external-link button is-normal is-rounded is-dark"
-                  >
-                    <span class="icon"
-                      ><i class="ai ai-arxiv" style="font-style: normal; font-weight: bold">arXiv</i></span
-                    >
-                    <span>arXiv</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a
-                    href="https://arxiv.org/pdf/2604.08819.pdf"
-                    target="_blank"
-                    class="external-link button is-normal is-rounded is-dark"
-                  >
-                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                    <span>Paper PDF</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a
-                    href="https://huggingface.co/papers/2604.08819"
-                    target="_blank"
-                    class="external-link button is-normal is-rounded is-dark"
-                  >
-                    <span class="icon">🤗</span>
-                    <span>HF Papers</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a
-                    href="https://github.com/fcakyon/senben"
-                    target="_blank"
-                    class="external-link button is-normal is-rounded is-dark"
-                  >
-                    <span class="icon"><i class="fab fa-github"></i></span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a
-                    href="https://huggingface.co/datasets/fcakyon/senben"
-                    target="_blank"
-                    class="external-link button is-normal is-rounded is-dark"
-                  >
-                    <span class="icon">🤗</span>
-                    <span>Dataset</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <button
-                    class="button is-normal is-rounded is-dark"
-                    disabled
-                    title="Model weights are private during the camera-ready review period and will be flipped to public soon."
-                  >
-                    <span class="icon">🤗</span>
-                    <span>Q2L-bal model (coming soon)</span>
-                  </button>
-                </span>
-
-                <span class="link-block">
-                  <button
-                    class="button is-normal is-rounded is-dark"
-                    disabled
-                    title="Model weights are private during the camera-ready review period and will be flipped to public soon."
-                  >
-                    <span class="icon">🤗</span>
-                    <span>Q2L-agg model (coming soon)</span>
-                  </button>
-                </span>
-              </div>
+    <div class="more-works-container">
+      <button class="more-works-btn" onclick="toggleMoreWorks()" title="More works by the authors">
+        <i class="fas fa-flask"></i>
+        More Works
+        <i class="fas fa-chevron-down dropdown-arrow"></i>
+      </button>
+      <div class="more-works-dropdown" id="moreWorksDropdown">
+        <div class="dropdown-header">
+          <h4>More from the authors</h4>
+          <button class="close-btn" onclick="toggleMoreWorks()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="works-list">
+          <a href="https://scholar.google.com/citations?user=RHGyDE0AAAAJ&hl=en" class="work-item" target="_blank">
+            <div class="work-info">
+              <h5>Fatih Cagatay Akyon &mdash; Google Scholar</h5>
+              <p>Full publication list, citation graph, and co-authors.</p>
+              <span class="work-venue">Google Scholar</span>
             </div>
-          </div>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+          <a href="https://blog.metu.edu.tr/atemizel/" class="work-item" target="_blank">
+            <div class="work-info">
+              <h5>Alptekin Temizel &mdash; lab page</h5>
+              <p>METU Graduate School of Informatics group.</p>
+              <span class="work-venue">METU</span>
+            </div>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="hero teaser">
-      <div class="container is-max-desktop">
+    <main id="main-content">
+      <section class="hero">
         <div class="hero-body">
-          <figure class="image">
-            <img
-              src="static/images/teaser.png"
-              alt="SenBen teaser. Left: latency vs SenBen-F1 across compact and frontier vision language models. Right: tag F1 across content moderation safety classifiers."
-            />
-          </figure>
-          <p class="has-text-centered is-size-7" style="color: #666; margin-top: 0.5rem">
-            <b>Left.</b> Latency vs SenBen-F1 across all evaluated models. Our 241M Q2L students sit at 733&nbsp;ms with
-            $0 inference cost, well below proprietary APIs and 8 to 10B open VLMs. <b>Right.</b> Tag F1 across safety
-            classifiers. Q2L-bal covers all 16 MECD tags and reaches `F1^tag=.594` versus the best commercial API at
-            `.430`.
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <div class="column has-text-centered">
+                <h1 class="title is-1 publication-title">
+                  SenBen: Sensitive Scene Graphs for Explainable Content Moderation
+                </h1>
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block">
+                    <a href="https://scholar.google.com/citations?user=RHGyDE0AAAAJ&hl=en" target="_blank"
+                      >Fatih Cagatay Akyon</a
+                    ><sup>1,2</sup>,
+                  </span>
+                  <span class="author-block">
+                    <a href="https://blog.metu.edu.tr/atemizel/" target="_blank">Alptekin Temizel</a><sup>1</sup>
+                  </span>
+                </div>
+
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block"><sup>1</sup>Graduate School of Informatics, METU</span>
+                  <span class="author-block">&nbsp;&nbsp;<sup>2</sup>Ultralytics</span>
+                </div>
+
+                <div class="is-size-6 publication-authors" style="margin-top: 0.4rem">
+                  <span class="author-block">CVPR Workshops 2026</span>
+                </div>
+
+                <div class="column has-text-centered">
+                  <div class="publication-links">
+                    <span class="link-block">
+                      <a
+                        href="https://arxiv.org/abs/2604.08819"
+                        target="_blank"
+                        class="external-link button is-normal is-rounded is-dark"
+                      >
+                        <span class="icon"><i class="ai ai-arxiv"></i></span>
+                        <span>arXiv</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a
+                        href="https://arxiv.org/pdf/2604.08819.pdf"
+                        target="_blank"
+                        class="external-link button is-normal is-rounded is-dark"
+                      >
+                        <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a
+                        href="https://huggingface.co/papers/2604.08819"
+                        target="_blank"
+                        class="external-link button is-normal is-rounded is-dark"
+                      >
+                        <span class="icon">🤗</span>
+                        <span>HF Papers</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a
+                        href="https://github.com/fcakyon/senben"
+                        target="_blank"
+                        class="external-link button is-normal is-rounded is-dark"
+                      >
+                        <span class="icon"><i class="fab fa-github"></i></span>
+                        <span>Code</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a
+                        href="https://huggingface.co/datasets/fcakyon/senben"
+                        target="_blank"
+                        class="external-link button is-normal is-rounded is-dark"
+                      >
+                        <span class="icon">🤗</span>
+                        <span>Dataset</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <button
+                        class="button is-normal is-rounded is-dark"
+                        disabled
+                        title="Model weights are private during the camera-ready review period and will be flipped to public soon."
+                      >
+                        <span class="icon">🤗</span>
+                        <span>Q2L-bal (coming soon)</span>
+                      </button>
+                    </span>
+
+                    <span class="link-block">
+                      <button
+                        class="button is-normal is-rounded is-dark"
+                        disabled
+                        title="Model weights are private during the camera-ready review period and will be flipped to public soon."
+                      >
+                        <span class="icon">🤗</span>
+                        <span>Q2L-agg (coming soon)</span>
+                      </button>
+                    </span>
+
+                    <span class="link-block">
+                      <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"><i class="fas fa-quote-left"></i></span>
+                        <span>BibTeX</span>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hero teaser">
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <figure class="image">
+              <img
+                src="static/images/teaser.png"
+                alt="SenBen teaser. Left: latency vs SenBen-F1 across compact and frontier vision language models. Right: tag F1 across content moderation safety classifiers."
+                style="max-width: 100%; height: auto"
+              />
+            </figure>
+            <h2 class="subtitle has-text-centered" style="margin-top: 1rem">
+              <strong>Left:</strong> Latency vs SenBen-F1 across all evaluated models. Our 241M Q2L students sit at
+              733&nbsp;ms with $0 inference cost, well below proprietary APIs and 8 to 10B open VLMs.
+              <strong>Right:</strong> Tag F1 across safety classifiers. Q2L-bal covers all 16 MECD tags and reaches
+              F1<sup>tag</sup>&nbsp;=&nbsp;.594, vs the best commercial API at .430.
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      <section class="section hero is-light">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+              <h2 class="title is-3">Abstract</h2>
+              <div class="content has-text-justified">
+                <p>
+                  Content moderation systems classify images as safe or unsafe but lack spatial grounding and
+                  interpretability: they cannot explain <em>what</em> sensitive behavior was detected, <em>who</em> is
+                  involved, or <em>where</em> it occurs. We introduce the <strong>Sensitive Benchmark (SenBen)</strong>,
+                  the first large-scale scene graph benchmark for sensitive content, comprising
+                  <strong>13,999 frames</strong> from 219 movies annotated with Visual Genome-style scene graphs (25
+                  object classes, 30 attributes including affective states such as <em>pain</em>, <em>fear</em>,
+                  <em>aggression</em>, and <em>distress</em>, 19 predicates) and
+                  <strong>16 sensitivity tags</strong> across 5 categories. We distill a frontier VLM into a compact
+                  241M student model using a multi-task recipe that addresses vocabulary imbalance in autoregressive
+                  scene graph generation through suffix-based object identity, Vocabulary-Aware Recall (VAR) Loss, and a
+                  decoupled Query2Label tag head with asymmetric loss, yielding a +6.4 percentage point improvement in
+                  SenBen Recall over standard cross-entropy training. On grounded scene graph metrics, our student model
+                  outperforms all evaluated VLMs except Gemini models and all commercial safety APIs, while achieving
+                  the highest object detection and captioning scores across all models, at 7.6x faster inference and 16x
+                  less GPU memory.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container is-max-desktop">
+          <h2 class="title is-3 has-text-centered">Headline numbers</h2>
+          <p class="has-text-centered" style="margin-bottom: 2rem; color: #666">
+            From the paper's Tables 2, 3, and 4. Full breakdown is in the
+            <a href="https://arxiv.org/abs/2604.08819" target="_blank">paper</a>.
           </p>
-        </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <h2 class="title is-3">Abstract</h2>
-            <div class="content has-text-justified">
-              <p>
-                Content moderation systems classify images as safe or unsafe but lack spatial grounding and
-                interpretability: they cannot explain <em>what</em> sensitive behavior was detected, <em>who</em> is
-                involved, or <em>where</em> it occurs. We introduce the <b>Sensitive Benchmark (SenBen)</b>, the first
-                large-scale scene graph benchmark for sensitive content, comprising <b>13,999 frames</b> from
-                <b>219 movies</b> annotated with Visual Genome-style scene graphs (25 object classes, 30 attributes
-                including affective states such as <em>pain</em>, <em>fear</em>, <em>aggression</em>, and
-                <em>distress</em>, 19 predicates) and <b>16 sensitivity tags</b> across 5 categories. We distill a
-                frontier VLM into a compact 241M student model using a multi-task recipe that addresses vocabulary
-                imbalance in autoregressive scene graph generation through suffix-based object identity,
-                Vocabulary-Aware Recall (VAR) Loss, and a decoupled Query2Label tag head with asymmetric loss, yielding
-                a +6.4 percentage point improvement in SenBen Recall over standard cross-entropy training. On grounded
-                scene graph metrics, our student model outperforms all evaluated VLMs except Gemini models and all
-                commercial safety APIs, while achieving the highest object detection and captioning scores across all
-                models, at 7.6× faster inference and 16× less GPU memory.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="background-color: #fafafa">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Headline numbers</h2>
-        <p class="has-text-centered mb-5">
-          From the paper's Tables 2, 3, and 4 (full breakdown is in the
-          <a href="https://arxiv.org/abs/2604.08819" target="_blank">paper</a>).
-        </p>
-
-        <div class="columns is-multiline">
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">Vs frontier vision language models</p>
-                <p class="subtitle is-6">SenBen test split, 2,000 frames</p>
-                <ul style="list-style: none; padding-left: 0">
+          <div class="columns is-multiline">
+            <div class="column is-half">
+              <div class="content">
+                <h3 class="title is-5" style="margin-bottom: 0.5rem">Vs frontier vision language models</h3>
+                <p style="font-size: 0.85rem; color: #666">SenBen test split, 2,000 frames</p>
+                <ul>
                   <li>
-                    🏆 <b>Best Object Recall</b> across 8 evaluated VLMs: <code>0.420</code> vs next-best
-                    Gemini&nbsp;3&nbsp;Pro <code>0.295</code>
+                    🏆 <strong>Best Object Recall</strong> across 8 evaluated VLMs: <code>.420</code> vs next-best
+                    Gemini&nbsp;3&nbsp;Pro <code>.295</code>
                   </li>
                   <li>
-                    🏆 <b>Best Caption Similarity</b>: <code>0.77</code> vs next-best Gemini&nbsp;3&nbsp;Flash
-                    <code>0.654</code>
+                    🏆 <strong>Best Caption Similarity</strong>: <code>.77</code> vs next-best Gemini&nbsp;3&nbsp;Flash
+                    <code>.654</code>
                   </li>
                   <li>
-                    🥈 <b>Best SenBen-F1 among non-Gemini models</b>: <code>0.428</code> vs Claude Opus&nbsp;4.6
-                    <code>0.404</code> and GLM-4.6V <code>0.364</code>
+                    🥈 <strong>Best SenBen-F1 among non-Gemini models</strong>: <code>.428</code> vs Claude
+                    Opus&nbsp;4.6 <code>.404</code>
                   </li>
                 </ul>
               </div>
             </div>
-          </div>
 
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">Vs content moderation APIs</p>
-                <p class="subtitle is-6">SenBen test split, 16 MECD tag taxonomy</p>
-                <ul style="list-style: none; padding-left: 0">
+            <div class="column is-half">
+              <div class="content">
+                <h3 class="title is-5" style="margin-bottom: 0.5rem">Vs content moderation APIs</h3>
+                <p style="font-size: 0.85rem; color: #666">SenBen test split, 16 MECD tag taxonomy</p>
+                <ul>
                   <li>
-                    🏆 <b>Only model that covers all 16 MECD tags.</b> Every commercial API and safety classifier covers
-                    at most 8.
+                    🏆 <strong>Only model that covers all 16 MECD tags.</strong> Every commercial API and safety
+                    classifier covers at most 8.
                   </li>
                   <li>
-                    🏆 <b>Highest tag F1</b>: <code>0.594</code> (Q2L-bal) vs Azure Content Safety <code>0.430</code>
+                    🏆 <strong>Highest tag F1</strong>: <code>.594</code> (Q2L-bal) vs Azure Content Safety
+                    <code>.430</code>
                   </li>
                   <li>
-                    🏆 <b>Highest safe / unsafe F1</b>: <code>0.847</code> vs OpenAI Moderation <code>0.664</code>
+                    🏆 <strong>Highest safe / unsafe F1</strong>: <code>.847</code> vs OpenAI Moderation
+                    <code>.664</code>
                   </li>
                   <li>
-                    🏆 <b>Plus a full grounded scene graph</b> (objects, attributes, predicates, bounding boxes) that no
-                    safety classifier produces
+                    🏆 <strong>Plus a full grounded scene graph</strong> (objects, attributes, predicates, bounding
+                    boxes) that no safety classifier produces
                   </li>
                 </ul>
               </div>
             </div>
-          </div>
 
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">Efficiency</p>
-                <p class="subtitle is-6">RTX 4090, fp32, beam search B=3</p>
-                <ul style="list-style: none; padding-left: 0">
-                  <li>🏆 <b>733&nbsp;ms / frame</b>, lowest latency in our evaluation</li>
+            <div class="column is-half">
+              <div class="content">
+                <h3 class="title is-5" style="margin-bottom: 0.5rem">Efficiency</h3>
+                <p style="font-size: 0.85rem; color: #666">RTX 4090, fp32, beam search B=3</p>
+                <ul>
+                  <li>🏆 <strong>733 ms / frame</strong>, lowest latency in our evaluation</li>
                   <li>
-                    🏆 <b>1.2 GB peak VRAM</b>, 16 to 18× lower than open VLMs (18.8 GB Qwen3-VL, 21.5 GB GLM-4.6V)
+                    🏆 <strong>1.2 GB peak VRAM</strong>, 16 to 18x lower than open VLMs (18.8 GB Qwen3-VL, 21.5 GB
+                    GLM-4.6V)
                   </li>
-                  <li>🏆 <b>$0 per inference</b>, vs $4.49 to $26.58 per 2K frames for proprietary APIs</li>
+                  <li>🏆 <strong>$0 per inference</strong>, vs $4.49 to $26.58 per 2K frames for proprietary APIs</li>
                 </ul>
               </div>
             </div>
-          </div>
 
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">Two operating points</p>
-                <p class="subtitle is-6">Same architecture, different ASL gammas</p>
-                <ul style="list-style: none; padding-left: 0">
+            <div class="column is-half">
+              <div class="content">
+                <h3 class="title is-5" style="margin-bottom: 0.5rem">Two operating points</h3>
+                <p style="font-size: 0.85rem; color: #666">Same architecture, different ASL gammas</p>
+                <ul>
                   <li>
-                    <b>Q2L-bal</b> (γ⁻=4, γ⁺=1): tag-detection-focused. Highest tag F1 of our two models
-                    (<code>0.594</code>).
+                    <strong>Q2L-bal</strong> (γ⁻=4, γ⁺=1): tag-detection-focused. Highest tag F1 of our two models
+                    (<code>.594</code>).
                   </li>
                   <li>
-                    <b>Q2L-agg</b> (γ⁻=7, γ⁺=0): grounded-scene-graph-focused. Highest SenBen-F1 of our two models
-                    (<code>0.431</code>).
+                    <strong>Q2L-agg</strong> (γ⁻=7, γ⁺=0): grounded-scene-graph-focused. Highest SenBen-F1 of our two
+                    models (<code>.431</code>).
                   </li>
-                  <li>Pick whichever fits your moderation pipeline. Both 241M, both 733&nbsp;ms, both $0 cost.</li>
+                  <li>Both 241M, 733&nbsp;ms, $0 cost. Pick whichever fits your moderation pipeline.</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">What is in this benchmark</h2>
-
-        <div class="columns is-centered mt-4">
-          <div class="column is-three-fifths">
-            <div class="content">
-              <ul>
-                <li>
-                  <b>13,999 movie frames</b> from 219 movies (1982 to 2023), split as 9,999 train / 2,000 val / 2,000
-                  test.
-                </li>
-                <li>
-                  Each frame is annotated with a Visual Genome aligned scene graph: 25 object classes, 30 attributes
-                  (including affective states <em>pain</em>, <em>aggression</em>, <em>distress</em>, <em>pleasure</em>,
-                  <em>fear</em>; body states <em>naked</em>, <em>topless</em>, <em>bloody</em>; etc.), and 19 predicates
-                  (<em>stabbing</em>, <em>kissing</em>, <em>injecting</em>, ...).
-                </li>
-                <li>
-                  <b>16 MECD safety tags</b> spanning 5 categories: immodesty, sexual, violence, substances, other.
-                </li>
-                <li>
-                  The verbatim Gemini 3 Pro <b>reasoning trace</b> for each label, retained to support explainability
-                  research.
-                </li>
-                <li>
-                  Bounding boxes are normalized to <code>0..1000</code> in
-                  <code>[y_min, x_min, y_max, x_max]</code> order, matching Visual Genome.
-                </li>
-              </ul>
-              <p>
-                Access is gated, research only, non-commercial, with a one to two week review SLA. Request access on the
-                <a href="https://huggingface.co/datasets/fcakyon/senben" target="_blank">Hugging Face dataset page</a>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="background-color: #fafafa">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Resources</h2>
-
-        <div class="columns is-multiline mt-4">
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">📄 Paper</p>
-                <ul style="list-style: none; padding-left: 0">
-                  <li><a href="https://arxiv.org/abs/2604.08819" target="_blank">arXiv abstract</a></li>
-                  <li><a href="https://arxiv.org/pdf/2604.08819.pdf" target="_blank">PDF</a></li>
-                  <li><a href="https://huggingface.co/papers/2604.08819" target="_blank">HF Papers</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">📦 Code</p>
-                <ul style="list-style: none; padding-left: 0">
-                  <li><a href="https://github.com/fcakyon/senben" target="_blank">github.com/fcakyon/senben</a></li>
-                  <li>Inference, evaluation, training, and 18 baseline runners</li>
-                  <li>Two-venv install (transformers 4.44.2 vs 5.2.0)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">🤗 Dataset</p>
-                <ul style="list-style: none; padding-left: 0">
+      <section class="section hero is-light">
+        <div class="container is-max-desktop">
+          <h2 class="title is-3 has-text-centered">What is in this benchmark</h2>
+          <div class="columns is-centered">
+            <div class="column is-three-fifths">
+              <div class="content">
+                <ul>
                   <li>
-                    <a href="https://huggingface.co/datasets/fcakyon/senben" target="_blank">fcakyon/senben</a> (gated,
-                    v1.0)
+                    <strong>13,999 movie frames</strong> from 219 movies (1982 to 2023), split as 9,999 train / 2,000
+                    val / 2,000 test.
                   </li>
-                  <li>13,999 frames, parquet with embedded JPGs (≈1.0 GB)</li>
-                  <li>Pin <code>revision="v1.0"</code> to reproduce paper numbers</li>
+                  <li>
+                    Each frame is annotated with a Visual Genome aligned scene graph: 25 object classes, 30 attributes
+                    (including affective states <em>pain</em>, <em>aggression</em>, <em>distress</em>,
+                    <em>pleasure</em>, <em>fear</em>; body states <em>naked</em>, <em>topless</em>, <em>bloody</em>;
+                    etc.), and 19 predicates (<em>stabbing</em>, <em>kissing</em>, <em>injecting</em>, ...).
+                  </li>
+                  <li>
+                    <strong>16 MECD safety tags</strong> spanning 5 categories: immodesty, sexual, violence, substances,
+                    other.
+                  </li>
+                  <li>
+                    The verbatim Gemini 3 Pro <strong>reasoning trace</strong> for each label, retained to support
+                    explainability research.
+                  </li>
+                  <li>
+                    Bounding boxes are normalized to <code>0..1000</code> in
+                    <code>[y_min, x_min, y_max, x_max]</code> order, matching Visual Genome.
+                  </li>
                 </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="column is-half">
-            <div class="card" style="height: 100%">
-              <div class="card-content">
-                <p class="title is-5">🤗 Models</p>
-                <ul style="list-style: none; padding-left: 0">
-                  <li><b>Q2L-bal</b> (high tag F1) <span class="tag is-warning is-light">coming soon</span></li>
-                  <li><b>Q2L-agg</b> (high SenBen-F1) <span class="tag is-warning is-light">coming soon</span></li>
-                  <li>Both are 241M, MIT-licensed, currently private during the camera-ready review period</li>
-                </ul>
+                <p>
+                  Access is gated, research only, non-commercial, with a one to two week review SLA. Request access on
+                  the
+                  <a href="https://huggingface.co/datasets/fcakyon/senben" target="_blank">Hugging Face dataset page</a
+                  >.
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section" id="bibtex">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">📚 BibTeX</h2>
-        <pre
-          style="background: #fafafa; padding: 1.5rem; border-radius: 6px; border: 1px solid #ddd; overflow-x: auto"
-        ><code>@inproceedings{akyon2026senben,
+      <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <div class="bibtex-header">
+            <h2 class="title">BibTeX</h2>
+            <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+              <i class="fas fa-copy"></i>
+              <span class="copy-text">Copy</span>
+            </button>
+          </div>
+          <pre id="bibtex-code"><code>@inproceedings{akyon2026senben,
   title     = {SenBen: Sensitive Scene Graphs for Explainable Content Moderation},
   author    = {Akyon, Fatih Cagatay and Temizel, Alptekin},
   booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)},
   year      = {2026},
   url       = {https://arxiv.org/abs/2604.08819}
 }</code></pre>
-        <p class="has-text-centered is-size-7" style="color: #888; margin-top: 0.5rem">
-          Please also cite the source MECD dataset (Kaggle, "Movies Explicit Content Dataset") if you use the 16 MECD
-          safety tag taxonomy.
-        </p>
-      </div>
-    </section>
+          <p style="font-size: 0.85rem; color: #888; margin-top: 0.5rem">
+            Please also cite the source MECD dataset (Kaggle Movies Explicit Content Dataset) if you use the 16 MECD
+            safety tag taxonomy.
+          </p>
+        </div>
+      </section>
 
-    <footer class="footer" style="background-color: #fafafa">
-      <div class="container is-max-desktop">
-        <div class="columns">
-          <div class="column">
-            <p class="is-size-7" style="color: #666">
-              The participation of Fatih Cagatay Akyon in CVPR 2026 was supported by Ultralytics. The participation of
-              Alptekin Temizel was supported by the EPAM Türkiye AI Research Fund, administered by the Graduate School
-              of Informatics.
-            </p>
-            <p class="is-size-7 mt-2" style="color: #888">
-              This page is built with <a href="https://bulma.io" target="_blank">Bulma</a> and adapted from the
-              <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank"
-                >Academic Project Page Template</a
-              >. Source:
-              <a href="https://github.com/fcakyon/senben/tree/main/docs" target="_blank"
-                >github.com/fcakyon/senben/docs</a
-              >.
-            </p>
+      <footer class="footer">
+        <div class="container">
+          <div class="columns is-centered">
+            <div class="column is-8">
+              <div class="content">
+                <p>
+                  The participation of Fatih Cagatay Akyon in CVPR 2026 was supported by Ultralytics. The participation
+                  of Alptekin Temizel was supported by the EPAM T&uuml;rkiye AI Research Fund, administered by the
+                  Graduate School of Informatics.
+                </p>
+                <p>
+                  This page was built using the
+                  <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank"
+                    >Academic Project Page Template</a
+                  >
+                  which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project
+                  page. You are free to borrow the source code of this website, we just ask that you link back to this
+                  page in the footer. This website is licensed under a
+                  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank"
+                    >Creative Commons Attribution-ShareAlike 4.0 International License</a
+                  >.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
-
-    <aside class="more-publications">
-      <a
-        href="https://scholar.google.com/citations?user=RHGyDE0AAAAJ&hl=en"
-        target="_blank"
-        class="more-pubs-pill"
-        title="More publications by Fatih Cagatay Akyon"
-      >
-        <span>More from the author</span>
-      </a>
-    </aside>
-
-    <script src="static/js/index.js"></script>
+      </footer>
+    </main>
   </body>
 </html>
