@@ -223,8 +223,14 @@
                 </div>
 
                 <div class="is-size-5 publication-authors">
-                  <span class="author-block"><sup>1</sup>Graduate School of Informatics, METU</span>
-                  <span class="author-block">&nbsp;&nbsp;<sup>2</sup>Ultralytics</span>
+                  <span class="author-block"
+                    ><sup>1</sup
+                    ><a href="https://ii.metu.edu.tr/" target="_blank">Graduate School of Informatics, METU</a></span
+                  >
+                  <span class="author-block"
+                    >&nbsp;&nbsp;<sup>2</sup
+                    ><a href="https://www.ultralytics.com/" target="_blank">Ultralytics</a></span
+                  >
                 </div>
 
                 <div class="is-size-6 publication-authors" style="margin-top: 0.4rem">
@@ -289,6 +295,15 @@
                     </span>
 
                     <span class="link-block">
+                      <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"><i class="fas fa-quote-left"></i></span>
+                        <span>BibTeX</span>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="publication-links" style="margin-top: 0.5rem">
+                    <span class="link-block">
                       <button
                         class="button is-normal is-rounded is-dark"
                         disabled
@@ -308,13 +323,6 @@
                         <span class="icon">🤗</span>
                         <span>Q2L-agg (coming soon)</span>
                       </button>
-                    </span>
-
-                    <span class="link-block">
-                      <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon"><i class="fas fa-quote-left"></i></span>
-                        <span>BibTeX</span>
-                      </a>
                     </span>
                   </div>
                 </div>
@@ -405,8 +413,8 @@
 
           <h3 class="title is-5" style="margin-top: 2rem">Table 1. System ablation</h3>
           <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
-            Incremental gains as components are added on top of the cross-entropy baseline. SenBen-Recall and
-            SenBen-F1 are the headline metrics; Tag F1 is macro tag F1.
+            Incremental gains as components are added on top of the cross-entropy baseline. SenBen-Recall and SenBen-F1
+            are the headline metrics; Tag F1 is macro tag F1.
           </p>
           <div class="table-container">
             <table class="table is-fullwidth is-striped is-narrow is-hoverable">
@@ -469,8 +477,8 @@
             Table 2. Per-category leave-one-out (delta SenBen-Recall, percentage points)
           </h3>
           <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
-            Drop in SenBen-Recall per MECD category when each ingredient is removed from the full decoder (VAR + SS + MinPermCE +
-            LS + Suffix). Suffix-based identity and VAR Loss are the two most impactful components.
+            Drop in SenBen-Recall per MECD category when each ingredient is removed from the full decoder (VAR + SS +
+            MinPermCE + LS + Suffix). Suffix-based identity and VAR Loss are the two most impactful components.
           </p>
           <div class="table-container">
             <table class="table is-fullwidth is-striped is-narrow is-hoverable">
@@ -539,8 +547,9 @@
             Table 3. SenBen results vs frontier vision language models
           </h3>
           <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem">
-            On the 2,000-frame test split. SenBen-Recall and SenBen-F1 are the headline metrics. Tag F1 is macro F1 over MECD tags,
-            Object Recall is sensitive object recall at IoU >= .5, Caption Similarity uses BGE-m3 sentence embeddings. Sorted by SenBen-F1 descending.
+            On the 2,000-frame test split. SenBen-Recall and SenBen-F1 are the headline metrics. Tag F1 is macro F1 over
+            MECD tags, Object Recall is sensitive object recall at IoU >= .5, Caption Similarity uses BGE-m3 sentence
+            embeddings. Sorted by SenBen-F1 descending.
           </p>
           <div class="table-container">
             <table class="table is-fullwidth is-striped is-narrow is-hoverable">
@@ -559,11 +568,21 @@
                 <tr>
                   <td>Gemini 3 Pro (low reas.)</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.652</td><td class="has-text-right">.647</td><td class="has-text-right">.806</td><td class="has-text-right">.295</td><td class="has-text-right">.642</td></tr>
+                  <td class="has-text-right">.652</td>
+                  <td class="has-text-right">.647</td>
+                  <td class="has-text-right">.806</td>
+                  <td class="has-text-right">.295</td>
+                  <td class="has-text-right">.642</td>
+                </tr>
                 <tr>
                   <td>Gemini 3 Flash (low reas.)</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.593</td><td class="has-text-right">.583</td><td class="has-text-right">.784</td><td class="has-text-right">.271</td><td class="has-text-right">.654</td></tr>
+                  <td class="has-text-right">.593</td>
+                  <td class="has-text-right">.583</td>
+                  <td class="has-text-right">.784</td>
+                  <td class="has-text-right">.271</td>
+                  <td class="has-text-right">.654</td>
+                </tr>
                 <tr style="background: #d6f5f1">
                   <td>
                     <b><a href="https://huggingface.co/fcakyon/senben-q2l-agg" target="_blank">Q2L-agg (ours)</a></b>
@@ -589,31 +608,66 @@
                 <tr>
                   <td>Claude Opus 4.6</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.327</td><td class="has-text-right">.404</td><td class="has-text-right">.658</td><td class="has-text-right">.082</td><td class="has-text-right">.598</td></tr>
+                  <td class="has-text-right">.327</td>
+                  <td class="has-text-right">.404</td>
+                  <td class="has-text-right">.658</td>
+                  <td class="has-text-right">.082</td>
+                  <td class="has-text-right">.598</td>
+                </tr>
                 <tr>
                   <td>GLM-4.6V (reas.)</td>
                   <td class="has-text-right">10.3B</td>
-                  <td class="has-text-right">.291</td><td class="has-text-right">.364</td><td class="has-text-right">.492</td><td class="has-text-right">.123</td><td class="has-text-right">.563</td></tr>
+                  <td class="has-text-right">.291</td>
+                  <td class="has-text-right">.364</td>
+                  <td class="has-text-right">.492</td>
+                  <td class="has-text-right">.123</td>
+                  <td class="has-text-right">.563</td>
+                </tr>
                 <tr>
                   <td>GPT-5.2 (med. reas.)</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.319</td><td class="has-text-right">.362</td><td class="has-text-right">.608</td><td class="has-text-right">.072</td><td class="has-text-right">.616</td></tr>
+                  <td class="has-text-right">.319</td>
+                  <td class="has-text-right">.362</td>
+                  <td class="has-text-right">.608</td>
+                  <td class="has-text-right">.072</td>
+                  <td class="has-text-right">.616</td>
+                </tr>
                 <tr>
                   <td>Qwen3-VL-8B</td>
                   <td class="has-text-right">8.3B</td>
-                  <td class="has-text-right">.286</td><td class="has-text-right">.340</td><td class="has-text-right">.469</td><td class="has-text-right">.104</td><td class="has-text-right">.548</td></tr>
+                  <td class="has-text-right">.286</td>
+                  <td class="has-text-right">.340</td>
+                  <td class="has-text-right">.469</td>
+                  <td class="has-text-right">.104</td>
+                  <td class="has-text-right">.548</td>
+                </tr>
                 <tr>
                   <td>Claude Sonnet 4.6</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.277</td><td class="has-text-right">.339</td><td class="has-text-right">.643</td><td class="has-text-right">.034</td><td class="has-text-right">.590</td></tr>
+                  <td class="has-text-right">.277</td>
+                  <td class="has-text-right">.339</td>
+                  <td class="has-text-right">.643</td>
+                  <td class="has-text-right">.034</td>
+                  <td class="has-text-right">.590</td>
+                </tr>
                 <tr>
                   <td>GPT-5-mini (med. reas.)</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.285</td><td class="has-text-right">.330</td><td class="has-text-right">.659</td><td class="has-text-right">.040</td><td class="has-text-right">.605</td></tr>
+                  <td class="has-text-right">.285</td>
+                  <td class="has-text-right">.330</td>
+                  <td class="has-text-right">.659</td>
+                  <td class="has-text-right">.040</td>
+                  <td class="has-text-right">.605</td>
+                </tr>
                 <tr>
                   <td>GPT-5.2</td>
                   <td class="has-text-right">proprietary</td>
-                  <td class="has-text-right">.247</td><td class="has-text-right">.304</td><td class="has-text-right">.550</td><td class="has-text-right">.052</td><td class="has-text-right">.583</td></tr>
+                  <td class="has-text-right">.247</td>
+                  <td class="has-text-right">.304</td>
+                  <td class="has-text-right">.550</td>
+                  <td class="has-text-right">.052</td>
+                  <td class="has-text-right">.583</td>
+                </tr>
               </tbody>
             </table>
           </div>
