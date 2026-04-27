@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, dataset, or trained models, please cite the paper below."
+title: "SenBen: Sensitive Scene Graphs for Explainable Content Moderation"
+type: software
+authors:
+  - family-names: Akyon
+    given-names: Fatih Cagatay
+    affiliation: "Graduate School of Informatics, METU"
+    orcid: "https://orcid.org/0000-0002-7339-4982"
+  - family-names: Temizel
+    given-names: Alptekin
+    affiliation: "Graduate School of Informatics, METU"
+repository-code: "https://github.com/fcakyon/senben"
+url: "https://senben.kim"
+license: MIT
+date-released: 2026-04-27
+keywords:
+  - scene graph generation
+  - explainable AI
+  - vision language models
+  - small models
+  - content moderation
+  - Florence-2
+preferred-citation:
+  type: conference-paper
+  title: "SenBen: Sensitive Scene Graphs for Explainable Content Moderation"
+  authors:
+    - family-names: Akyon
+      given-names: Fatih Cagatay
+      affiliation: "Graduate School of Informatics, METU"
+    - family-names: Temizel
+      given-names: Alptekin
+      affiliation: "Graduate School of Informatics, METU"
+  year: 2026
+  collection-title: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)"
+  url: "https://arxiv.org/abs/2604.08819"
