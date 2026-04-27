@@ -400,8 +400,8 @@
                   involved, or <em>where</em> it occurs. We introduce the <strong>Sensitive Benchmark (SenBen)</strong>,
                   the first large-scale scene graph benchmark for sensitive content, comprising
                   <strong>13,999 frames</strong> from 157 movies annotated with Visual Genome-style scene graphs (25
-                  object classes, 30 attributes including affective states such as <em>pain</em>, <em>fear</em>,
-                  <em>aggression</em>, and <em>distress</em>, 19 predicates) and
+                  object classes, 28 attributes including affective states such as <em>pain</em>, <em>fear</em>,
+                  <em>aggression</em>, and <em>distress</em>, 14 predicates) and
                   <strong>16 sensitivity tags</strong> across 5 categories. We distill a frontier VLM into a compact
                   241M student model using a multi-task recipe that addresses vocabulary imbalance in autoregressive
                   scene graph generation through suffix-based object identity, Vocabulary-Aware Recall (VAR) Loss, and a
@@ -929,10 +929,10 @@
                     movies), 2,000 val (31 movies), 2,000 test (31 movies). Movies are mutually exclusive across splits.
                   </li>
                   <li>
-                    Each frame is annotated with a Visual Genome aligned scene graph: 25 object classes, 30 attributes
+                    Each frame is annotated with a Visual Genome aligned scene graph: 25 object classes, 28 attributes
                     (including affective states <em>pain</em>, <em>aggression</em>, <em>distress</em>,
                     <em>pleasure</em>, <em>fear</em>; body states <em>naked</em>, <em>topless</em>, <em>bloody</em>;
-                    etc.), and 19 predicates (<em>stabbing</em>, <em>kissing</em>, <em>injecting</em>, ...).
+                    etc.), and 14 predicates (<em>stabbing</em>, <em>kissing</em>, <em>injecting</em>, ...).
                   </li>
                   <li>
                     <strong>16 MECD safety tags</strong> spanning 5 categories: immodesty, sexual, violence, substances,
